@@ -1,5 +1,7 @@
-﻿namespace evanbuildsworldsAPI
+﻿using System.ComponentModel.DataAnnotations.Schema;
+namespace evanbuildsworldsAPI
 {
+    [Table("blog_post")]
     public class BlogPost
     {
         public int id {get; set; }

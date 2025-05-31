@@ -9,17 +9,23 @@ namespace evanbuildsworldsAPI.Controllers
     {
 
         private readonly ILogger<BlogPostController> _logger;
-
-        public BlogPostController(ILogger<BlogPostController> logger)
+        private readonly MyDbContext _context;
+        public BlogPostController(ILogger<BlogPostController> logger, MyDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
         [HttpGet(Name = "GetBlogPost")]
-        public BlogPost GetAllPosts()
+        public IActionResult GetAllPosts()
         {
             //1. Open a connection to the database
             //2. Query the database for all posts
             //3. store all posts in an array
+
+            var posts = _context.BlogPost.ToList();
+            if (!posts.Any()) return NotFound("No Posts Found.");
+
+            return Ok(posts);
         }
 
 

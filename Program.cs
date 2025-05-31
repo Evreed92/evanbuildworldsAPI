@@ -1,5 +1,6 @@
 
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 
 namespace evanbuildsworldsAPI
@@ -12,14 +13,14 @@ namespace evanbuildsworldsAPI
 
             var builder = WebApplication.CreateBuilder(args);
 
+            //database config
+            builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             // Add services to the container.
-
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-       
+            
 
 
 
