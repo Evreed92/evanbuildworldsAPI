@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using evanbuildsworldsAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace evanbuildsworldsAPI
 {

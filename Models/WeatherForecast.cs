@@ -1,4 +1,4 @@
-namespace evanbuildsworldsAPI
+namespace evanbuildsworldsAPI.Models
 {
     public class WeatherForecast
     {
