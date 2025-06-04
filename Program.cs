@@ -24,7 +24,7 @@ namespace evanbuildsworldsAPI
                                         .AllowAnyHeader();
                                 });
                         });
-            //database config
+            //database config - appsettings.json
             builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             // Add services to the container.
             builder.Services.AddControllers();
