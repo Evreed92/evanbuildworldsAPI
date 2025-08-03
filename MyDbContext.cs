@@ -11,11 +11,11 @@ namespace evanbuildsworldsAPI
 
         //constuctor
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
-        public DbSet<BlogPost> BlogPost { get; set; }
+        public DbSet<Article> Article { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BlogPost>().ToTable("blog_post");
+            modelBuilder.Entity<Article >().ToTable("article");
         }
     }
 }

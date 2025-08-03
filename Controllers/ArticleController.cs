@@ -6,12 +6,12 @@ namespace evanbuildsworldsAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BlogController : ControllerBase
+    public class ArticleController : ControllerBase
     {
 
-        private readonly ILogger<BlogController> _logger;
+        private readonly ILogger<ArticleController> _logger;
         private readonly MyDbContext _context;
-        public BlogController(ILogger<BlogController> logger, MyDbContext context)
+        public ArticleController(ILogger<ArticleController> logger, MyDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -19,21 +19,21 @@ namespace evanbuildsworldsAPI.Controllers
 
         #region Get
 
-        [HttpGet("GetAllPosts")]
-        public IActionResult GetAllPosts()
+        [HttpGet("GetAllArticles")]
+        public IActionResult GetAllArticles()
         {
-            var posts = _context.BlogPost.ToList();
+            var posts = _context.Article.ToList();
             if (!posts.Any()) return NotFound("No Posts Found.");
 
             return Ok(posts);
         }
 
-        [HttpGet("GetPostById")]
-        public ActionResult<BlogPost> GetPostById(int id)
+        [HttpGet("GetArticleById")]
+        public ActionResult<Article> GetArticleById(int id)
         {
-            BlogPost post = new BlogPost();
-            var posts = _context.BlogPost.ToList();
-            if (!posts.Any()) return NotFound("No Posts Found.");
+            Article post = new Article();
+            var posts = _context.Article.ToList();
+            if (!posts.Any()) return NotFound("No Articles Found.");
             {
                 post = posts.FirstOrDefault(post => post.id == id);
             }
