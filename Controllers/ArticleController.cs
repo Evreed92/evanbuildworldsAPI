@@ -22,10 +22,10 @@ namespace evanbuildsworldsAPI.Controllers
         [HttpGet("GetAllArticles")]
         public IActionResult GetAllArticles()
         {
-            var posts = _context.Article.ToList();
-            if (!posts.Any()) return NotFound("No Posts Found.");
+            var articles = _context.Article.ToList();
+            if (!articles.Any()) return NotFound("No Posts Found.");
 
-            return Ok(posts);
+            return Ok(articles);
         }
 
         [HttpGet("GetArticleById")]
@@ -34,11 +34,28 @@ namespace evanbuildsworldsAPI.Controllers
             Article post = new Article();
             var posts = _context.Article.ToList();
             if (!posts.Any()) return NotFound("No Articles Found.");
-            {
-                post = posts.FirstOrDefault(post => post.id == id);
-            }
+            
+            post = posts.FirstOrDefault(post => post.id == id);
             return post;
         }
+
+        [HttpGet("GetArticlesByType")]
+        public ActionResult<List<Article>> GetArticlesByType(string type)
+        {
+            // Turn Type into the corresponding Int
+            Article TestArticle = new Article(type);
+            var typeId = TestArticle.typeId;
+
+            List<Article> posts = new List<Article>();
+            var db = _context.Article.Where(article => article.typeId == typeId).ToList();
+            if (!db.Any()) return NotFound("No Articles Found.");
+
+            return db;
+        }
+
+        //GetArticleByTitle
+
+
 
         #endregion
 
