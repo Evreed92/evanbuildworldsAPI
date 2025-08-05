@@ -12,10 +12,12 @@ namespace evanbuildsworldsAPI
         //constuctor
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
         public DbSet<Article> Article { get; set; }
+        public DbSet<ArticleTypes> ArticleTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Article >().ToTable("article");
+
         }
     }
 }
