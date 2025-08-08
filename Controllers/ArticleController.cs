@@ -37,7 +37,7 @@ namespace evanbuildsworldsAPI.Controllers
             Article post = new Article();
             var posts = _context.Article.ToList();
             if (!posts.Any()) return NotFound("No Articles Found.");
-            
+
             post = posts.FirstOrDefault(post => post.id == id);
             return post;
         }
@@ -69,7 +69,7 @@ namespace evanbuildsworldsAPI.Controllers
             foreach (var typePair in dbTypes) {
                 if (typePair.name == type) {
                     givenType = typePair.id;
-                } 
+                }
             }
 
             List<Article> articles = new List<Article>();
@@ -92,7 +92,14 @@ namespace evanbuildsworldsAPI.Controllers
          * 3. DeleteArticle
          * 
          */
+        [HttpPost("CreateArticle")]
+        public async Task<Article> CreateArticle(Article article) 
+        {
+            _context.Article.Add(article);
+            await _context.SaveChangesAsync();
 
+            return article;
+        }
 
         #endregion
 
