@@ -83,11 +83,10 @@ namespace evanbuildsworldsAPI.Controllers
 
 
         #endregion
-        #region Set
+        #region Post and Delete
         /*
          * Methods to Build
          * 
-         * 1. CreateNewArticle
          * 2. EditExistingArticle
          * 3. DeleteArticle
          * 
@@ -95,12 +94,55 @@ namespace evanbuildsworldsAPI.Controllers
         [HttpPost("CreateArticle")]
         public async Task<Article> CreateArticle(Article article) 
         {
+            //def have bugs to work out with regard to the article properties and the db interaction.
             _context.Article.Add(article);
             await _context.SaveChangesAsync();
 
             return article;
         }
 
+        [HttpPut("EditArticle")]
+        public async Task<IActionResult> EditArticle(Article article)
+        {
+            var dbArticle = await _context.Article.FindAsync(article.id);
+            if (dbArticle != null)
+            {
+                dbArticle.id = article.id;
+                dbArticle.title = article.title;
+                dbArticle.dateEdited = article.dateEdited;
+                dbArticle.content = article.content;
+                dbArticle.typeId = article.typeId;
+
+                _context.Article.Update(dbArticle);
+                await _context.SaveChangesAsync();
+
+                return Ok(article);
+            }
+            if (dbArticle == null)
+            {
+                return NotFound();
+            }
+            return NotFound();
+            
+        }
+
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteItem(int id)
+        {
+            var item = await _context.Article.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound(); //404
+            }
+
+            _context.Article.Remove(item);
+            await _context.SaveChangesAsync();
+
+            return NoContent(); //204
+
+        }
         #endregion
 
     }
