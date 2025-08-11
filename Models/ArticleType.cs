@@ -2,7 +2,7 @@
 namespace evanbuildsworldsAPI.Models
 {
     [Table("types")]
-    public class ArticleTypes
+    public class ArticleType
     {
         public int id { get; set; }
         public string name { get; set; }

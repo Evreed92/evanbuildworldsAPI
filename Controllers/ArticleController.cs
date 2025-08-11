@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using evanbuildsworldsAPI.Models;
+using System.Collections.Immutable;
 
 namespace evanbuildsworldsAPI.Controllers
 {
@@ -11,7 +12,6 @@ namespace evanbuildsworldsAPI.Controllers
         #region Properties  
         private readonly ILogger<ArticleController> _logger;
         private readonly MyDbContext _context;
-
         #endregion
         #region Constructors
         public ArticleController(ILogger<ArticleController> logger, MyDbContext context)
@@ -22,12 +22,30 @@ namespace evanbuildsworldsAPI.Controllers
         #endregion
         #region Get
 
+        [HttpGet("GetArticleTypes")]
+        public List<ArticleType> GetArticleTypes()
+        {
+            var types = _context.ArticleType.ToList();
+            
+            return types;
+        }
+
+
         [HttpGet("GetAllArticles")]
         public IActionResult GetAllArticles()
         {
+            var types = GetArticleTypes();
             var articles = _context.Article.ToList();
             if (!articles.Any()) return NotFound("No Posts Found.");
+            foreach (Article article in articles)
+            {
+                foreach (ArticleType type in types)
+                {
+                    if (article.typeId == 0) article.type = null;
+                    if (article.typeId == type.id) article.type = type.name;
+                }
 
+            }
             return Ok(articles);
         }
 
@@ -42,6 +60,7 @@ namespace evanbuildsworldsAPI.Controllers
             return post;
         }
 
+        //Needs to be reworked
         [HttpGet("GetArticlesByType")]
         public ActionResult<List<Article>> GetArticlesByType(string type)
         {
@@ -62,8 +81,8 @@ namespace evanbuildsworldsAPI.Controllers
              * return list of articles
             */
 
-            List<ArticleTypes> typesList = new List<ArticleTypes>();
-            var dbTypes = _context.ArticleTypes.ToList();
+            List<ArticleType> typesList = new List<ArticleType>();
+            var dbTypes = _context.ArticleType.ToList();
             var givenType = 0;
 
             foreach (var typePair in dbTypes) {
@@ -76,21 +95,15 @@ namespace evanbuildsworldsAPI.Controllers
             var dbArticles = _context.Article.Where(article => article.typeId == givenType).ToList();
 
             return dbArticles;
-        }
+        } 
 
         //GetArticleByTitle
 
 
 
         #endregion
-        #region Post and Delete
-        /*
-         * Methods to Build
-         * 
-         * 2. EditExistingArticle
-         * 3. DeleteArticle
-         * 
-         */
+        #region Post and Put
+      
         [HttpPost("CreateArticle")]
         public async Task<Article> CreateArticle(Article article) 
         {
@@ -126,7 +139,8 @@ namespace evanbuildsworldsAPI.Controllers
             
         }
 
-
+        #endregion
+        #region Delete
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(int id)
